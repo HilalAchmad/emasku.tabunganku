@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabungan EmasKu</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #eef2f5;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .app-card {
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    .header {
+      background: linear-gradient(135deg, #e6c875, #b8860b);
+      color: white;
+      padding: 24px 20px 45px;
+      text-align: center;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+    }
+
+    .header h2 {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .card-saldo {
+      background: white;
+      margin: -30px 20px 16px;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .label-saldo {
+      font-size: 13px;
+      color: #777;
+      margin-bottom: 4px;
+    }
+
+    .val-gram {
+      font-size: 30px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+
+    .grid-info {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed #eee;
+    }
+
+    .info-item {
+      text-align: center;
+      flex: 1;
+    }
+
+    .info-item .title {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 2px;
+    }
+
+    .info-item .value {
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .badge-status {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .untung {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
+    }
+
+    .rugi {
+      background-color: #ffebee;
+      color: #c62828;
+      border: 1px solid #ef9a9a;
+    }
+
+    .content {
+      padding: 0 20px 20px;
+      flex: 1;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 16px 0 10px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    .btn-hapus-semua {
+      background: none;
+      border: none;
+      color: #c62828;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    .btn-hapus-semua:hover {
+      background-color: #ffebee;
+    }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #b8860b;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background: #b8860b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
+    .btn-submit:active {
+      background: #8b6508;
+    }
+
+    .riwayat-box {
+      margin-top: 20px;
+    }
+
+    .item-riwayat {
+      background: #f8f9fa;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      border-left: 4px solid #b8860b;
+    }
+
+    .item-riwayat .detail {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .item-riwayat .tanggal {
+      font-size: 11px;
+      color: #888;
+    }
+
+    .riwayat-kanan {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-hapus-item {
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #ffcdd2;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .btn-reset-darurat {
+      margin-top: 25px;
+      width: 100%;
+      padding: 8px;
+      background: #f44336;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+    <div class="header">
+      <h2>Tabungan Emas Saya</h2>
+    </div>
+
+    <div class="card-saldo">
+      <div class="label-saldo">Total Tabungan Emas</div>
+      <div class="val-gram" id="totalGram">0,00 gram</div>
+
+      <div class="grid-info">
+        <div class="info-item">
+          <div class="title">Total Modal</div>
+          <div class="value" id="totalModal">Rp 0</div>
+        </div>
+        <div class="info-item">
+          <div class="title">Nilai Buyback</div>
+          <div class="value" id="nilaiBuyback">Rp 0</div>
+        </div>
+      </div>
+
+      <div id="statusUntungRugi" class="badge-status untung">
+        Untung: Rp 0
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="form-group">
+        <label for="inputBuyback">Harga Buyback Saat Ini (Per Gram)</label>
+        <input type="number" id="inputBuyback" placeholder="Contoh: 1200000" oninput="perbaruiBuyback()">
+      </div>
+
+      <div class="section-header">
+        <span class="section-title">Tambah Transaksi Beli</span>
+      </div>
+
+      <div class="form-group">
+        <label for="inputTanggal">Tanggal Pembelian</label>
+        <input type="date" id="inputTanggal">
+      </div>
+
+      <div class="form-group">
+        <label for="inputGram">Jumlah Emas (Gram)</label>
+        <input type="number" id="inputGram" placeholder="Contoh: 0.5" step="0.01">
+      </div>
+
+      <div class="form-group">
+        <label for="inputHargaBeli">Harga Beli Per Gram Saat Beli (Rp)</label>
+        <input type="number" id="inputHargaBeli" placeholder="Contoh: 1300000">
+      </div>
+
+      <button class="btn-submit" onclick="tambahTransaksi()">+ Tambah Pembelian</button>
+
+      <div class="riwayat-box">
+        <div class="section-header">
+          <span class="section-title">Riwayat Transaksi</span>
+          <button class="btn-hapus-semua" onclick="hapusSemuaTransaksi()">Hapus Semua</button>
+        </div>
+        <div id="daftarRiwayat"></div>
+      </div>
+
+      <!-- Tombol Pemulihan Jika Aplikasi Macet -->
+      <button class="btn-reset-darurat" onclick="resetAplikasiDarurat()">Reset Ulang Memori Aplikasi</button>
+    </div>
+  </div>
+
+  <script>
+    // Membaca data dengan aman menggunakan blok try-catch
+    let riwayat = [];
+    let hargaBuybackSaatIni = 1200000;
+
+    function muatDataAwal() {
+      try {
+        const dataRiwayat = localStorage.getItem('riwayatEmasV3');
+        if (dataRiwayat) {
+          riwayat = JSON.parse(dataRiwayat);
+        }
+        
+        const dataBuyback = localStorage.getItem('hargaBuybackV3');
+        if (dataBuyback) {
+          hargaBuybackSaatIni = parseFloat(dataBuyback) || 1200000;
+        }
+      } catch (e) {
+        console.error('Gagal membaca memori:', e);
+        riwayat = [];
+      }
+    }
+
+    muatDataAwal();
+
+    // Mengisi input default
+    document.getElementById('inputBuyback').value = hargaBuybackSaatIni;
+    document.getElementById('inputTanggal').valueAsDate = new Date();
+
+    function simpanData() {
+      try {
+        localStorage.setItem('riwayatEmasV3', JSON.stringify(riwayat));
+        localStorage.setItem('hargaBuybackV3', hargaBuybackSaatIni);
+      } catch (e) {
+        alert('Gagal menyimpan data ke memori HP/browser.');
+      }
+    }
+
+    function perbaruiBuyback() {
+      const val = parseFloat(document.getElementById('inputBuyback').value);
+      hargaBuybackSaatIni = isNaN(val) ? 0 : val;
+      simpanData();
+      kalkulasiDanTampilkan();
+    }
+
+    function tambahTransaksi() {
+      const elTanggal = document.getElementById('inputTanggal');
+      const elGram = document.getElementById('inputGram');
+      const elHarga = document.getElementById('inputHargaBeli');
+
+      const tanggal = elTanggal.value;
+      const gram = parseFloat(elGram.value);
+      const hargaBeli = parseFloat(elHarga.value);
+
+      // Validasi input yang ramah pengguna
+      if (!tanggal) {
+        alert('Silakan pilih tanggal pembelian!');
+        return;
+      }
+      if (isNaN(gram) || gram <= 0) {
+        alert('Silakan isi jumlah gram emas dengan angka lebih dari 0!');
+        return;
+      }
+      if (isNaN(hargaBeli) || hargaBeli <= 0) {
+        alert('Silakan isi harga beli per gram dengan angka lebih dari 0!');
+        return;
+      }
+
+      const totalModalTransaksi = gram * hargaBeli;
+
+      // Membuat objek transaksi baru
+      const transaksiBaru = {
+        id: Date.now(),
+        tanggal: tanggal,
+        gram: gram,
+        hargaBeli: hargaBeli,
+        modal: totalModalTransaksi
+      };
+
+      riwayat.unshift(transaksiBaru);
+      simpanData();
+
+      // Reset form input
+      elGram.value = '';
+      elHarga.value = '';
+      elTanggal.valueAsDate = new Date();
+
+      kalkulasiDanTampilkan();
+      alert('Transaksi berhasil ditambahkan!');
+    }
+
+    function hapusTransaksi(id) {
+      if (confirm('Apakah kamu yakin ingin menghapus transaksi ini?')) {
+        riwayat = riwayat.filter(item => item.id !== id);
+        simpanData();
+        kalkulasiDanTampilkan();
+      }
+    }
+
+    function hapusSemuaTransaksi() {
+      if (riwayat.length === 0) {
+        alert('Belum ada riwayat transaksi.');
+        return;
+      }
+
+      if (confirm('Apakah kamu yakin ingin menghapus SELURUH riwayat transaksi?')) {
+        riwayat = [];
+        simpanData();
+        kalkulasiDanTampilkan();
+      }
+    }
+
+    function resetAplikasiDarurat() {
+      if (confirm('Ini akan menghapus seluruh data tersimpan dan menyegarkan aplikasi. Lanjutkan?')) {
+        localStorage.clear();
+        location.reload();
+      }
+    }
+
+    function kalkulasiDanTampilkan() {
+      let totalGram = 0;
+      let totalModal = 0;
+
+      // Menghitung akumulasi dengan pemeriksaan keabsahan angka
+      if (Array.isArray(riwayat)) {
+        riwayat.forEach(item => {
+          const g = parseFloat(item.gram) || 0;
+          const m = parseFloat(item.modal) || 0;
+          totalGram += g;
+          totalModal += m;
+        });
+      }
+
+      const nilaiBuyback = totalGram * hargaBuybackSaatIni;
+      const selisih = nilaiBuyback - totalModal;
+
+      document.getElementById('totalGram').innerText = totalGram.toFixed(2).replace('.', ',') + ' gram';
+      document.getElementById('totalModal').innerText = 'Rp ' + totalModal.toLocaleString('id-ID');
+      document.getElementById('nilaiBuyback').innerText = 'Rp ' + nilaiBuyback.toLocaleString('id-ID');
+
+      const elStatus = document.getElementById('statusUntungRugi');
+      if (selisih >= 0) {
+        elStatus.className = 'badge-status untung';
+        elStatus.innerText = 'Untung: + Rp ' + selisih.toLocaleString('id-ID');
+      } else {
+        elStatus.className = 'badge-status rugi';
+        elStatus.innerText = 'Rugi: - Rp ' + Math.abs(selisih).toLocaleString('id-ID');
+      }
+
+      const elRiwayat = document.getElementById('daftarRiwayat');
+      elRiwayat.innerHTML = '';
+
+      if (riwayat.length === 0) {
+        elRiwayat.innerHTML = '<p style="color:#aaa; font-size:12px;">Belum ada catatan transaksi.</p>';
+      } else {
+        riwayat.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'item-riwayat';
+          
+          const tglFormat = item.tanggal ? item.tanggal.split('-').reverse().join('/') : '-';
+          const g = parseFloat(item.gram) || 0;
+          const h = parseFloat(item.hargaBeli) || 0;
+          const m = parseFloat(item.modal) || 0;
+
+          div.innerHTML = `
+            <div class="detail">
+              <strong>Beli ${g} gram</strong>
+              <span class="tanggal">${tglFormat} @ Rp ${h.toLocaleString('id-ID')}/g</span>
+            </div>
+            <div class="riwayat-kanan">
+              <strong>Rp ${m.toLocaleString('id-ID')}</strong>
+              <button class="btn-hapus-item" onclick="hapusTransaksi(${item.id})" title="Hapus">✕</button>
+            </div>
+          `;
+          elRiwayat.appendChild(div);
+        });
+      }
+    }
+
+    kalkulasiDanTampilkan();
+  </script>
+
+</body>
+</html>
